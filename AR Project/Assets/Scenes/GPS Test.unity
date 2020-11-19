@@ -660,7 +660,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a704f1b53b85eae43b4a336fe79268c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Coordinates: {fileID: 0}
+  Coordinates: {fileID: 180435774}
 --- !u!114 &1339111446
 MonoBehaviour:
   m_ObjectHideFlags: 0
