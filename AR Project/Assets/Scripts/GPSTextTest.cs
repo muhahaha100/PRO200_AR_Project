@@ -9,6 +9,6 @@ public class GPSTextTest : MonoBehaviour
 
     private void Update()
     {
-        Coordinates.text = "lat: " + GPS.Instance.lat.ToString() + "  long: " + GPS.Instance.lon.ToString();
+        Coordinates.text = "lat: " + GPS.Instance.lat.ToString() + "  long: " + GPS.Instance.lon.ToString() + " end";
     }
 }
