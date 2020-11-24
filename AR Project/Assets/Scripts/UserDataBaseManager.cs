@@ -15,4 +15,8 @@ public class UserDataBaseManager : MonoBehaviour
         collection = database.GetCollection<BsonDocument>("users");
     }
 
+    void Update()
+    {
+        
+    }
 }
