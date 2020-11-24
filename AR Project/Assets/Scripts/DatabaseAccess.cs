@@ -15,8 +15,8 @@ public class DatabaseAccess : MonoBehaviour
         collection = database.GetCollection<BsonDocument>("scoreBoard");
     }
 
-    void Update()
+    public async void SaveScoreToDataBase(string username, int score, float lon, float lat)
     {
-        
+        BsonDocument document = new BsonDocument { { username, score, lat, lon} }
     }
 }
