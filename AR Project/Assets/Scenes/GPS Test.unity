@@ -675,6 +675,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lat: 0
   lon: 0
+  city: 
 --- !u!4 &1339111447
 Transform:
   m_ObjectHideFlags: 0

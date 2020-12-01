@@ -17,6 +17,6 @@ public class LeaderDataBaseManager : MonoBehaviour
 
     public async void SaveScoreToDataBase(string username, int score, float lon, float lat)
     {
-        BsonDocument document = new BsonDocument { { username, score, lat, lon} }
+        BsonDocument document = new BsonDocument { { username, score } };
     }
 }
