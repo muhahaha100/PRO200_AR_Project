@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
+
 
 public class GPS : MonoBehaviour
 {
@@ -9,6 +11,8 @@ public class GPS : MonoBehaviour
 
     public float lat;
     public float lon;
+
+    private string url = "a url";
 
     private void Start()
     {
@@ -47,6 +51,16 @@ public class GPS : MonoBehaviour
 
         lat = Input.location.lastData.latitude;
         lon = Input.location.lastData.longitude;
+    }
+
+    public string CityName()
+    {
+
+    }
+
+    IEnumerator getCityAtLocation()
+    {
+
     }
 
     
