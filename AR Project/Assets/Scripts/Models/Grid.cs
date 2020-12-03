@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour
 {
+    [SerializeField] Camera Camera = null;
+    [SerializeField] PlacementManager PM = null;
+
     [SerializeField] int GridRows = 0;
     [SerializeField] int GridCols = 0;
     [SerializeField] GameObject TilePrefab = null;
@@ -96,6 +99,45 @@ public class Grid : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit Hit = new RaycastHit();
+            Ray Ray = Camera.ScreenPointToRay(Input.mousePosition);
+
+            if(Physics.Raycast(Ray, out Hit))
+            {
+                if(Hit.collider.gameObject.GetComponent<Tile>() != null)
+                {
+                    Vector3 position = new Vector3(Hit.collider.transform.position.x, Hit.collider.transform.position.y + 1.5f, Hit.collider.transform.position.z);
+                    Quaternion rotation = Hit.collider.transform.rotation;
+
+                    Debug.Log("Tile Hit");
+                    if (!Hit.collider.gameObject.GetComponent<Tile>().HasEntity)
+                    {
+                        GameObject minion = null;
+                        if(PM.ColorClicked == "Red")
+                        {
+                            minion = Instantiate(PM.RedMinion, position, rotation);
+                        }
+                        else if (PM.ColorClicked == "Green")
+                        {
+                            minion = Instantiate(PM.GreenMinion, position, rotation);
+                        }
+                        else if (PM.ColorClicked == "Blue")
+                        {
+                            minion = Instantiate(PM.BlueMinion, position, rotation);
+                        }
+                        else
+                        {
+                            Debug.Log("No Color Selected");
+                        }
+
+                        Hit.collider.gameObject.GetComponent<Tile>().HasEntity = true;
+                        Hit.collider.gameObject.GetComponent<Tile>().Entity = minion.GetComponent<Minion>();
+                        Debug.Log("Minion Placed");
+                    }
+                }
+            }
+        }
     }
 }
