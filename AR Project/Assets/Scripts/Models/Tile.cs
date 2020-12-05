@@ -6,16 +6,6 @@ public class Tile : MonoBehaviour
 {
     public bool HasEntity { get; set; } = false;
     public Entity Entity { get; set; } = null;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public int Row { get; set; } = 0;
+    public int Col { get; set; } = 0;
 }

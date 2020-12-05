@@ -11,12 +11,23 @@ public class PlacementManager : MonoBehaviour
     public GameObject GreenMinion { get { return greenMinion; } set { greenMinion = value; } }
     [SerializeField] GameObject blueMinion = null;
     public GameObject BlueMinion { get { return blueMinion; } set { blueMinion = value; } }
-
     public string ColorClicked { get; set; } = "";
 
+    //Buttons
+    [SerializeField] GameObject RB = null;
+    [SerializeField] GameObject GB = null;
+    [SerializeField] GameObject BB = null;
 
     public void ButtonClicked(string Color)
     {
         ColorClicked = Color;
+    }
+
+    public void DisablePlacement()
+    {
+        ColorClicked = "";
+        RB.SetActive(false);
+        GB.SetActive(false);
+        BB.SetActive(false);
     }
 }
