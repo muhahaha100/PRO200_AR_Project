@@ -13,22 +13,25 @@ public class Grid : MonoBehaviour
     [SerializeField] Material BlackMat = null;
     [SerializeField] Material WhiteMat = null;
 
-    private List<GameObject> Tiles = new List<GameObject>();
+    public GameObject[,] Tiles = null;
 
     // Start is called before the first frame update
     void Start()
     {
+        Tiles = new GameObject[GridRows,GridCols];
         //FOR CREATING THE TILE GRID
         float xOffset = ((GridRows / 2.0f) - 0.5f) * -1;
         float zOffset = ((GridCols / 2.0f) - 0.5f) * -1;
 
         for(int x = 0; x < GridRows; x++)
         {
-            for(int z = 0; z < GridCols; z++)
+            for(int y = 0; y < GridCols; y++)
             {
-                Vector3 Position = new Vector3(xOffset + (1 * x), TilePrefab.transform.position.y, zOffset + (1 * z));
+                Vector3 Position = new Vector3(xOffset + (1 * x), TilePrefab.transform.position.y, zOffset + (1 * y));
                 GameObject Tile = Instantiate(TilePrefab, Position, TilePrefab.transform.rotation);
-                Tiles.Add(Tile);
+                Tile.GetComponent<Tile>().Row = x;
+                Tile.GetComponent<Tile>().Col = y;
+                Tiles[x, y] = Tile;
             }
         }
 
@@ -112,29 +115,35 @@ public class Grid : MonoBehaviour
                     Quaternion rotation = Hit.collider.transform.rotation;
 
                     Debug.Log("Tile Hit");
-                    if (!Hit.collider.gameObject.GetComponent<Tile>().HasEntity)
+                    if(Hit.collider.gameObject.GetComponent<Tile>().Col <= 2)
                     {
-                        GameObject minion = null;
-                        if(PM.ColorClicked == "Red")
+                        if (!Hit.collider.gameObject.GetComponent<Tile>().HasEntity)
                         {
-                            minion = Instantiate(PM.RedMinion, position, rotation);
-                        }
-                        else if (PM.ColorClicked == "Green")
-                        {
-                            minion = Instantiate(PM.GreenMinion, position, rotation);
-                        }
-                        else if (PM.ColorClicked == "Blue")
-                        {
-                            minion = Instantiate(PM.BlueMinion, position, rotation);
-                        }
-                        else
-                        {
-                            Debug.Log("No Color Selected");
-                        }
+                            GameObject minion = null;
+                            if(PM.ColorClicked == "Red")
+                            {
+                                minion = Instantiate(PM.RedMinion, position, rotation);
+                            }
+                            else if (PM.ColorClicked == "Green")
+                            {
+                                minion = Instantiate(PM.GreenMinion, position, rotation);
+                            }
+                            else if (PM.ColorClicked == "Blue")
+                            {
+                                minion = Instantiate(PM.BlueMinion, position, rotation);
+                            }
+                            else
+                            {
+                                Debug.Log("No Color Selected");
+                            }
 
-                        Hit.collider.gameObject.GetComponent<Tile>().HasEntity = true;
-                        Hit.collider.gameObject.GetComponent<Tile>().Entity = minion.GetComponent<Minion>();
-                        Debug.Log("Minion Placed");
+                            if(minion != null)
+                            {
+                                Hit.collider.gameObject.GetComponent<Tile>().HasEntity = true;
+                                Hit.collider.gameObject.GetComponent<Tile>().Entity = minion.GetComponent<Minion>();
+                                Debug.Log("Minion Placed");
+                            }
+                        }
                     }
                 }
             }
