@@ -22,4 +22,13 @@ public abstract class Entity : MonoBehaviour
     {
         hp += hpHealed;
     }
+
+    public void Move(Vector3 pointA, Vector3 pointB, float timer)
+    {
+        Vector3 peak = pointB - pointA;
+        peak = new Vector3(peak.x, peak.y + 5, peak.z);
+
+        Vector3 position = Vector3.Lerp(Vector3.Lerp(pointA, peak, timer), Vector3.Lerp(peak, pointB, timer), timer);
+        gameObject.transform.position = position;
+    }
 }
