@@ -18,9 +18,12 @@ public class GPS : MonoBehaviour
 
     private void Start()
     {
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-        StartCoroutine(StartLocationService());
+        if(Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            StartCoroutine(StartLocationService());
+        }
     }
 
     private IEnumerator StartLocationService()
