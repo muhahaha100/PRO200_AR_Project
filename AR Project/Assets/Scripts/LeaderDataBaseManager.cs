@@ -23,7 +23,7 @@ public class LeaderDataBaseManager : MonoBehaviour
 
     public async void SaveScoreToDataBase(string username, int score)
     {
-        BsonDocument document = new BsonDocument { {"username", username }, {"score", score }, {"city", GPS.Instance.city } };
+        BsonDocument document = new BsonDocument { {"username", username }, {"score", score }, {"city", GPS.Instance.City } };
 
         await collection.InsertOneAsync(document);
     }

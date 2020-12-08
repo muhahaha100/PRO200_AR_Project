@@ -14,7 +14,21 @@ public class GPS : MonoBehaviour
     public float lat;
     public float lon;
 
-    public string city;
+    private string city;
+    public string City {
+        get
+        {
+            //if (city == null || city == "")
+            //{
+            //    city = "not found";
+            //}
+            return city;
+        }
+        set 
+        {
+            city = value;
+        } 
+    }
 
     private void Start()
     {
@@ -78,7 +92,8 @@ public class GPS : MonoBehaviour
 
         //pull the info by index/name
         //ie: string city = locationInfor["city"];
-        city = locationInfo["address"]["city"];
+        City = locationInfo["address"]["city"];
+        
     }
 
     
