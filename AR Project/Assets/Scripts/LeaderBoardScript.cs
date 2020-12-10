@@ -16,6 +16,6 @@ public class LeaderBoardScript : MonoBehaviour
 
     public void BackButton()
     {
-        SceneManager.LoadScene("StartupScene");
+        SceneManager.LoadScene("MainMenuScene");
     }
 }

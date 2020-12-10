@@ -18,10 +18,10 @@ public class GPS : MonoBehaviour
     public string City {
         get
         {
-            //if (city == null || city == "")
-            //{
-            //    city = "not found";
-            //}
+            if (city == null || city == "")
+            {
+                city = "not found";
+            }
             return city;
         }
         set 
@@ -42,8 +42,7 @@ public class GPS : MonoBehaviour
     private void Start()
     {
 
-
-        if(!Permission.HasUserAuthorizedPermission(Permission.CoarseLocation))
+        if (!Permission.HasUserAuthorizedPermission(Permission.CoarseLocation))
         {
             Permission.RequestUserPermission(Permission.CoarseLocation);
             dialog = new GameObject();
