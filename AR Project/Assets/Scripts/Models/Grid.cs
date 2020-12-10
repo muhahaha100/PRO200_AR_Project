@@ -115,6 +115,7 @@ public class Grid : MonoBehaviour
                     Quaternion rotation = Hit.collider.transform.rotation;
 
                     Debug.Log("Tile Hit");
+                    //PLACEMENT
                     if(Hit.collider.gameObject.GetComponent<Tile>().Col <= 2)
                     {
                         if (!Hit.collider.gameObject.GetComponent<Tile>().HasEntity)
