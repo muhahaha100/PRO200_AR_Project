@@ -13,6 +13,10 @@ public abstract class Entity : MonoBehaviour
     [SerializeField] eElement element;
     public eElement Element { get { return element; } set { element = value; } }
 
+    public bool enemy = false;
+    
+    public Tile tile;
+    
     public void SubtractHP(float dmgTaken)
     {
         hp -= dmgTaken;

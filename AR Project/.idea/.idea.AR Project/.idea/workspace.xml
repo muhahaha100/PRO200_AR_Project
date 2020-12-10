@@ -10,6 +10,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/Assets/Scripts/SimulationManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Models/Tile.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Models/Grid.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Entity.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/AiControl.cs" />
       </list>
     </option>
@@ -53,6 +57,8 @@
       <option name="presentableId" value="Default" />
       <updated>1606180249814</updated>
       <workItem from="1606180272123" duration="4629000" />
+      <workItem from="1606958634875" duration="22913000" />
+      <workItem from="1607562925201" duration="303000" />
     </task>
     <servers />
   </component>
@@ -60,5 +66,15 @@
   <component name="UnityUnitTestConfiguration" currentTestLauncher="EditMode" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="295" y="182" width="1893" height="1028" key="dock-window-1" timestamp="1607382469571">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="295" y="182" width="1893" height="1028" key="dock-window-1/0.0.1920.1040@0.0.1920.1040" timestamp="1607382469571" />
+    <state x="1103" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1606959658103">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1103" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1606959658103" />
   </component>
 </project>

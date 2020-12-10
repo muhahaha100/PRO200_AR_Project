@@ -603,6 +603,7 @@ GameObject:
   m_Component:
   - component: {fileID: 724580992}
   - component: {fileID: 724580993}
+  - component: {fileID: 724580994}
   m_Layer: 0
   m_Name: SimulationManager
   m_TagString: Untagged
@@ -636,7 +637,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3fb6106e437b64409d4d466c69e68cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PM: {fileID: 0}
+  PM: {fileID: 379637563}
+  aiControl: {fileID: 724580994}
+--- !u!114 &724580994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 724580991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5557e5f54919be40aee918b971fabc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simulationManager: {fileID: 724580993}
+  placementManager: {fileID: 379637563}
+  grid: {fileID: 641287264}
+  RedMinionPrefab: {fileID: 6824731404439697262, guid: badd74653bd163b4984402c889bc517d,
+    type: 3}
+  GreenMinionPrefab: {fileID: 1684248417946215942, guid: b574720f82535104a9a1e88c19088eea,
+    type: 3}
+  BlueMinionPrefab: {fileID: 4955943834239077625, guid: a32e28ddc9ff0db49ba845c871437035,
+    type: 3}
+  rows: 7
+  columns: 10
 --- !u!1 &725668041
 GameObject:
   m_ObjectHideFlags: 0

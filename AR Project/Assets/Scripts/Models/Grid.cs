@@ -139,6 +139,7 @@ public class Grid : MonoBehaviour
 
                             if(minion != null)
                             {
+                                minion.GetComponent<Entity>().tile = Hit.collider.gameObject.GetComponent<Tile>();
                                 Hit.collider.gameObject.GetComponent<Tile>().HasEntity = true;
                                 Hit.collider.gameObject.GetComponent<Tile>().Entity = minion.GetComponent<Minion>();
                                 Debug.Log("Minion Placed");
