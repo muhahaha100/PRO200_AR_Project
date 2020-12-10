@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using SimpleJSON;
-
-
+using UnityEngine.Android;
 
 public class GPS : MonoBehaviour
 {
@@ -13,6 +12,7 @@ public class GPS : MonoBehaviour
 
     public float lat;
     public float lon;
+    GameObject dialog = null;
 
     private string city;
     public string City {
@@ -41,12 +41,39 @@ public class GPS : MonoBehaviour
 
     private void Start()
     {
+
+
+        if(!Permission.HasUserAuthorizedPermission(Permission.CoarseLocation))
+        {
+            Permission.RequestUserPermission(Permission.CoarseLocation);
+            dialog = new GameObject();
+        }
+
         StartCoroutine(StartLocationService());
 
     }
 
+    private void OnGUI()
+    {
+        if (!Permission.HasUserAuthorizedPermission(Permission.CoarseLocation))
+        {
+            
+            dialog.AddComponent<PermissionsRationaleDialog>();
+
+            return;
+        }
+        else if (dialog != null)
+        {
+            Destroy(dialog);
+            StartCoroutine(StartLocationService());
+
+        }
+    }
+
     private IEnumerator StartLocationService()
     {
+        yield return new WaitUntil(() => dialog == null);
+
         if(!Input.location.isEnabledByUser)
         {
             Debug.Log("user has not enabled GPS");
@@ -102,4 +129,33 @@ public class GPS : MonoBehaviour
     }
 
     
+}
+
+public class PermissionsRationaleDialog : MonoBehaviour
+{
+    const int kDialogWidth = 300;
+    const int kDialogHeight = 100;
+    private bool windowOpen = true;
+
+    void DoMyWindow(int windowID)
+    {
+        GUI.Label(new Rect(10, 20, kDialogWidth - 20, kDialogHeight - 50), "the location service is used to track your city for the leaderboards.");
+        GUI.Button(new Rect(10, kDialogHeight - 30, 100, 20), "No");
+        if (GUI.Button(new Rect(kDialogWidth - 110, kDialogHeight - 30, 100, 20), "Yes"))
+        {
+#if PLATFORM_ANDROID
+            Permission.RequestUserPermission(Permission.CoarseLocation);
+#endif
+            windowOpen = false;
+        }
+    }
+
+    void OnGUI()
+    {
+        if (windowOpen)
+        {
+            Rect rect = new Rect((Screen.width / 2) - (kDialogWidth / 2), (Screen.height / 2) - (kDialogHeight / 2), kDialogWidth, kDialogHeight);
+            GUI.ModalWindow(0, rect, DoMyWindow, "Permissions Request Dialog");
+        }
+    }
 }
