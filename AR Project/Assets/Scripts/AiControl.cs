@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -24,6 +25,12 @@ public class AiControl : MonoBehaviour
     public int rows = 7;
     public int columns = 10;
     public GameObject[,] m_board;
+
+    private Tile target;
+
+    private bool restartLoop = false;
+
+    private bool iAttacked = false;
     
     // Start is called before the first frame update
     void Start()
@@ -52,14 +59,51 @@ public class AiControl : MonoBehaviour
     {
         int newRow = 0;
         int newCol = 0;
+        bool iMoved = true;
         if ( Mathf.Abs(rowFrom - rowTo) <= 1 )
         {
             newRow = rowFrom;
             if ( Mathf.Abs(colFrom - colTo) <= 1 )
             {
-                // add element proficinecy here
-                
-                Debug.Log("Entity is already next to where it wants to be!");
+                try
+                {
+                    // add element proficinecy here
+                    iMoved = false;
+                    Tile EnemyTile = target;
+
+                    Debug.Log("Lets print together!");
+                    
+                    Debug.Log(EnemyTile.Entity);
+                    Debug.Log(grid.Tiles[rowFrom,colFrom].GetComponent<Tile>().Entity);
+
+                    iAttacked = true;
+                    
+                    grid.Tiles[rowFrom, colFrom].GetComponent<Tile>().Entity
+                        .Attack(EnemyTile.Entity);
+
+                    if ( EnemyTile.Entity != null && EnemyTile.Entity.HP <= 0 )
+                    {
+                        for ( int i = 0; i < entities.Count; i++ )
+                        {
+                            if ( entities[i].HP <= 0 )
+                            {
+                                restartLoop = true;
+                                entities.RemoveAt(i);
+                                Debug.Log("KILLED");
+                            }
+                        }
+                        Destroy(EnemyTile.Entity.gameObject);
+                        EnemyTile.Entity = null;
+                        
+                    }
+
+                    Debug.Log("Entity is already next to where it wants to be!");
+                }
+                catch ( Exception e )
+                {
+                    Debug.LogError(e);
+                    //stonks :D
+                }
             }
             else
             {
@@ -77,15 +121,65 @@ public class AiControl : MonoBehaviour
             // OMG REUSED CODE, THE HUMANITY
         }
 
-        Entity valueHolder = grid.Tiles[rowFrom, colFrom].GetComponent<Tile>().Entity;
-        grid.Tiles[rowFrom, colFrom].GetComponent<Tile>().Entity = null;
-        grid.Tiles[newRow, newCol].GetComponent<Tile>().Entity = valueHolder;
-
-        valueHolder.tile = grid.Tiles[newRow, newCol].GetComponent<Tile>();
-        valueHolder.gameObject.transform.position = valueHolder.tile.gameObject.transform.position + Vector3.up;
-        // lerp or something
+        if ( iMoved )
+        {
+            Entity valueHolder = grid.Tiles[rowFrom, colFrom].GetComponent<Tile>().Entity;
+            grid.Tiles[rowFrom, colFrom].GetComponent<Tile>().Entity = null;
+            grid.Tiles[newRow, newCol].GetComponent<Tile>().Entity = valueHolder;
         
+            grid.Tiles[rowFrom, colFrom].GetComponent<Tile>().MakeMeOriginal();
+        
+            Tile ATile = grid.Tiles[rowTo, colTo].GetComponent<Tile>();
+            if ( ATile.Entity != null && ATile.Entity.enemy )
+            {
+                ATile.gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
+            }
+            else
+            {
+                ATile.gameObject.GetComponent<MeshRenderer>().material.color = Color.green;
+            }
 
+            Tile old = grid.Tiles[rowFrom, colFrom].GetComponent<Tile>();
+        
+            valueHolder.tile = grid.Tiles[newRow, newCol].GetComponent<Tile>();
+            //valueHolder.gameObject.transform.position = valueHolder.tile.gameObject.transform.position + Vector3.up;
+            // lerp or something
+
+            busy = true;
+            StartCoroutine(moveObject(true, valueHolder, valueHolder.tile.gameObject.transform.position + Vector3.up,  old.gameObject.transform.position + Vector3.up,0, 1));
+        }
+
+        
+    }
+
+    private bool busy = false;
+
+    public IEnumerator moveObject(bool moving, Entity what, Vector3 to, Vector3 from, float timer, float timerPlus)
+    {
+        while ( moving )
+        {
+            timer += Time.deltaTime;
+
+            if ( timer >= timerPlus )
+            {
+                moving = false;
+            }
+            else
+            {
+                what.gameObject.transform.position = Vector3.Lerp(from, to, timer);
+            }
+            
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+
+        yield break;
+
+    }
+
+    public IEnumerator reset()
+    {
+        yield return new WaitForSeconds(2);
+        busy = false;
     }
 
     public void BetterMoveEntityCloser(int rowFrom, int colFrom, int rowTo, int colTo, int maxDistance)
@@ -110,7 +204,7 @@ public class AiControl : MonoBehaviour
                 }
                 catch ( IndexOutOfRangeException e )
                 {
-                    Debug.LogWarning(e);
+                    //Debug.LogWarning(e);
                 }
             }
         }
@@ -128,11 +222,13 @@ public class AiControl : MonoBehaviour
 
         if ( anything )
         {
+            target = grid.Tiles[rowTo, colTo].GetComponent<Tile>();
             MoveEntityCloserTo(rowFrom, colFrom, possibleMoves[index][0],possibleMoves[index][1], 3);
         }
         
         
     }
+
     
 
     // Update is called once per frame
@@ -143,7 +239,12 @@ public class AiControl : MonoBehaviour
         if ( simulation_time >= simulation_time_max )
         {
             simulation_time = 0;
-            GoThroughEachEntityToMoveAndAttack();
+
+            if ( !busy )
+            {
+                GoThroughEachEntityToMoveAndAttack();
+            }
+
         }
     }
 
@@ -151,20 +252,37 @@ public class AiControl : MonoBehaviour
     {
         foreach ( Entity entity in entities )
         {
-            int closestCol = 100;
-            int closestRow = 100;
-
-            foreach ( Entity otherEntity in entities )
+            if ( entity.tile.Entity != null )
             {
-                if ( entity != otherEntity )
+                int closestCol = 100;
+                int closestRow = 100;
+
+                foreach ( Entity otherEntity in entities )
                 {
-                    if ( entity.enemy != otherEntity.enemy )
+                    if ( entity != otherEntity )
                     {
-                        BetterMoveEntityCloser(entity.tile.Row, entity.tile.Col, otherEntity.tile.Row, otherEntity.tile.Col, 3);
+                        if ( entity.enemy != otherEntity.enemy )
+                        {
+                            BetterMoveEntityCloser(entity.tile.Row, entity.tile.Col, otherEntity.tile.Row, otherEntity.tile.Col, 3);
+                            
+                            break;
+                        }
                     }
+                }
+
+                if ( iAttacked )
+                {
+                    iAttacked = false;
+                    break;
+                }
+                if (restartLoop)
+                {
+                    break;
                 }
             }
         }
+
+        StartCoroutine(reset());
     }
 
     public void CallMeToMakeThePiecesMove()
@@ -231,5 +349,11 @@ public class AiControl : MonoBehaviour
             minion.GetComponent<Entity>().tile = grid.Tiles[row, 9 - i].GetComponent<Tile>();
             entities.Add(minion.GetComponent<Entity>());
         }
+    }
+
+    public void GameEnded()
+    {
+        // sim manager is called simulationManager! :D
+        // vernans code goes here! :D
     }
 }
