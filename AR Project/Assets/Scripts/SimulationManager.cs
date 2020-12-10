@@ -6,6 +6,8 @@ public class SimulationManager : MonoBehaviour
 {
     [SerializeField] PlacementManager PM = null;
 
+    public AiControl aiControl;
+    
     private bool SimulationRunning = false;
     private float timer = 0.0f;
     void Update()
@@ -18,8 +20,14 @@ public class SimulationManager : MonoBehaviour
 
     public void SimulateClicked()
     {
-        PM.DisablePlacement();
-        SimulationRunning = true;
-        print("Simulation started");
+        if ( !SimulationRunning )
+        {
+            PM.DisablePlacement();
+
+            SimulationRunning = true;
+            print("Simulation started");
+        
+            aiControl.StartSimulating();
+        }
     }
 }

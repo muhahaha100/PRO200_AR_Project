@@ -43,6 +43,7 @@ public class Grid : MonoBehaviour
             int counter = 0;
             foreach(GameObject Tile in Tiles)
             {
+                
                 if(counter == 0)
                 {
                     Tile.GetComponent<MeshRenderer>().material = WhiteMat;
@@ -53,6 +54,8 @@ public class Grid : MonoBehaviour
                     Tile.GetComponent<MeshRenderer>().material = BlackMat;
                     counter--;
                 }
+                
+                Tile.GetComponent<Tile>().OriginalMaterial = Tile.GetComponent<MeshRenderer>().material;
             }
         }
         else
@@ -88,6 +91,7 @@ public class Grid : MonoBehaviour
                         counter++;
                     }
                 }
+                Tile.GetComponent<Tile>().OriginalMaterial = Tile.GetComponent<MeshRenderer>().material;
                 tilesCounted++;
                 if (tilesCounted >= GridRows)
                 {
@@ -140,6 +144,7 @@ public class Grid : MonoBehaviour
 
                             if(minion != null)
                             {
+                                minion.GetComponent<Entity>().tile = Hit.collider.gameObject.GetComponent<Tile>();
                                 Hit.collider.gameObject.GetComponent<Tile>().HasEntity = true;
                                 Hit.collider.gameObject.GetComponent<Tile>().Entity = minion.GetComponent<Minion>();
                                 Debug.Log("Minion Placed");
