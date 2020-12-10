@@ -30,14 +30,19 @@ public class GPS : MonoBehaviour
         } 
     }
 
-    private void Start()
+    void Awake()
     {
         if(Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            StartCoroutine(StartLocationService());
         }
+    }
+
+    private void Start()
+    {
+        StartCoroutine(StartLocationService());
+
     }
 
     private IEnumerator StartLocationService()

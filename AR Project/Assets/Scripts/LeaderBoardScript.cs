@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LeaderBoardScript : MonoBehaviour
 {
@@ -11,5 +12,10 @@ public class LeaderBoardScript : MonoBehaviour
     private void Update()
     {
         CurrentCity.text = GPS.Instance.City;
+    }
+
+    public void BackButton()
+    {
+        SceneManager.LoadScene("StartupScene");
     }
 }

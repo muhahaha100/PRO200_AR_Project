@@ -8,17 +8,24 @@ using UnityEngine;
 
 public class LeaderDataBaseManager : MonoBehaviour
 {
+
+    public static LeaderDataBaseManager Instance { set; get; }
+
+  
+
     public MongoClient client = new MongoClient("mongodb+srv://Cwill:DataExpressData@cluster0.4ygyx.mongodb.net/5minus1?retryWrites=true&w=majority");
     public IMongoDatabase database;
     public IMongoCollection<BsonDocument> collection;
-    void Start()
-    {
+
+    
+    void Awake()
+    {      
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
         database = client.GetDatabase("5minus1");
         collection = database.GetCollection<BsonDocument>("scoreBoard");
-        Debug.Log("started");
-        //SaveScoreToDataBase("cwll", 10);
-        
-        //GetScoresFromDataBase();
+
     }
 
     public async void SaveScoreToDataBase(string username, int score)
@@ -29,6 +36,20 @@ public class LeaderDataBaseManager : MonoBehaviour
     }
 
     public async Task<List<PlayerScore>> GetScoresFromDataBase()
+    {
+        var localScores = await collection.FindAsync(FilterDefinition<BsonDocument>.Empty);
+        
+
+        List<PlayerScore> highScores = new List<PlayerScore>();
+        foreach (var score in localScores.ToList())
+        {
+            highScores.Add(Deserialize(score));
+        }
+
+        return highScores;
+    }
+
+    public async Task<List<PlayerScore>> GetScoresFromDataBase(string city)
     {
         FilterDefinition<BsonDocument> filter = new BsonDocument("city", "SLC");
         var localScores = await collection.FindAsync(filter);
