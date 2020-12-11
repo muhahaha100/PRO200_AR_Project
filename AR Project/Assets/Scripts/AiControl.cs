@@ -146,7 +146,17 @@ public class AiControl : MonoBehaviour
             }
 
             Tile old = grid.Tiles[rowFrom, colFrom].GetComponent<Tile>();
-        
+
+            if ( grid.Tiles[newRow, newCol].GetComponent<Tile>() )
+            {
+                grid.Tiles[newRow, newCol].AddComponent<Tile>();
+                grid.Tiles[newRow, newCol].GetComponent<Tile>().Col = newCol;
+                grid.Tiles[newRow, newCol].GetComponent<Tile>().Row = newRow;
+                grid.Tiles[newRow, newCol].GetComponent<Tile>().Entity = valueHolder;
+                grid.Tiles[newRow, newCol].GetComponent<Tile>().HasEntity = true;
+                grid.Tiles[newRow, newCol].GetComponent<Tile>().OriginalMaterial = old.OriginalMaterial;
+            }
+            Debug.Log((valueHolder == null).ToString());
             valueHolder.tile = grid.Tiles[newRow, newCol].GetComponent<Tile>();
             //valueHolder.gameObject.transform.position = valueHolder.tile.gameObject.transform.position + Vector3.up;
             // lerp or something
