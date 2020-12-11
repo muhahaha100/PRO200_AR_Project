@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -234,17 +235,38 @@ public class AiControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        simulation_time += Time.deltaTime;
-
-        if ( simulation_time >= simulation_time_max )
+        if ( simulating )
         {
-            simulation_time = 0;
+            simulation_time += Time.deltaTime;
 
-            if ( !busy )
+            if ( simulation_time >= simulation_time_max )
             {
-                GoThroughEachEntityToMoveAndAttack();
-            }
+                simulation_time = 0;
 
+                if ( !busy )
+                {
+                    GoThroughEachEntityToMoveAndAttack();
+
+                    bool justAllies = true;
+                    bool enemies = entities[0].enemy;
+
+                    for ( int i = 1; i < entities.Count; i++ )
+                    {
+                        if ( entities[i].enemy != enemies )
+                        {
+                            justAllies = false;
+                            break;
+                        }
+                    }
+
+                    if ( justAllies )
+                    {
+                        simulating = false;
+                        GameEnded();
+                    }
+                }
+
+            }
         }
     }
 

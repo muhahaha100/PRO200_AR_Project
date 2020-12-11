@@ -21,14 +21,19 @@
           <e p="Entity.cs" t="Include" />
           <e p="GPS.cs" t="Include" />
           <e p="GPSTextTest.cs" t="Include" />
+          <e p="LeaderBoardScript.cs" t="Include" />
           <e p="LeaderDataBaseManager.cs" t="Include" />
           <e p="LocalBattle.cs" t="Include" />
+          <e p="MainMenu.cs" t="Include" />
           <e p="Models" t="Include">
             <e p="Grid.cs" t="Include" />
+            <e p="LeaderBoardTile.cs" t="Include" />
             <e p="Minion.cs" t="Include" />
             <e p="Tile.cs" t="Include" />
           </e>
+          <e p="PauseManager.cs" t="Include" />
           <e p="PlacementManager.cs" t="Include" />
+          <e p="PopulateBoard.cs" t="Include" />
           <e p="SimpleCameraController.cs" t="Include" />
           <e p="SimulationManager.cs" t="Include" />
           <e p="UserDataBaseManager.cs" t="Include" />
