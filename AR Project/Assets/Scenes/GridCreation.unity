@@ -1031,7 +1031,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NameInput: {fileID: 565839232}
-  ScoreField: {fileID: 0}
+  ScoreField: {fileID: 1572208216}
   EndGameUI: {fileID: 1198067808}
   simulationManager: {fileID: 724580993}
   placementManager: {fileID: 379637563}
@@ -1044,6 +1044,7 @@ MonoBehaviour:
     type: 3}
   rows: 7
   columns: 10
+  simulating: 0
 --- !u!1 &725668041
 GameObject:
   m_ObjectHideFlags: 0
@@ -1732,8 +1733,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Padding: {x: 0, y: 0, z: 0, w: 0}
-  m_Softness: {x: 0, y: 0}
 --- !u!1 &1019605338
 GameObject:
   m_ObjectHideFlags: 0

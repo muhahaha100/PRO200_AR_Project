@@ -151,7 +151,7 @@ public class AiControl : MonoBehaviour
 
             Tile old = grid.Tiles[rowFrom, colFrom].GetComponent<Tile>();
 
-            if ( grid.Tiles[newRow, newCol].GetComponent<Tile>() )
+            if ( grid.Tiles[newRow, newCol].GetComponent<Tile>() != null )
             {
                 grid.Tiles[newRow, newCol].AddComponent<Tile>();
                 grid.Tiles[newRow, newCol].GetComponent<Tile>().Col = newCol;
@@ -254,6 +254,8 @@ public class AiControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+        Debug.Log(simulationManager.timer.ToString());
         if ( simulating )
         {
             simulation_time += Time.deltaTime;
@@ -395,14 +397,16 @@ public class AiControl : MonoBehaviour
 
     public void GameEnded()
     {
-        ScoreField.text = "Your Score: " + (int)simulationManager.timer;
+        ScoreField.text = "Your Score: " + ((int)(simulationManager.timer)).ToString();
         EndGameUI.SetActive(true);
+        scoreDAngIT = (int)simulationManager.timer;
     }
 
+    private int scoreDAngIT;
     private string username = "";
     public void Clicked_SaveScore()
     {
-        int score = (int)simulationManager.timer;
+        int score = scoreDAngIT;
 
         username = NameInput.text;
         LeaderDataBaseManager.Instance.SaveScoreToDataBase(username, score);
