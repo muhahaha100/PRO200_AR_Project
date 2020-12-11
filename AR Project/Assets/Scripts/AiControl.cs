@@ -75,12 +75,17 @@ public class AiControl : MonoBehaviour
                     Debug.Log("Lets print together!");
                     
                     Debug.Log(EnemyTile.Entity);
+
+                    if ( EnemyTile.Entity != null )
+                    {
+                        iAttacked = true;
+                    
+                        grid.Tiles[rowFrom, colFrom].GetComponent<Tile>().Entity
+                            .Attack(EnemyTile.Entity);
+                    }
                     Debug.Log(grid.Tiles[rowFrom,colFrom].GetComponent<Tile>().Entity);
 
-                    iAttacked = true;
                     
-                    grid.Tiles[rowFrom, colFrom].GetComponent<Tile>().Entity
-                        .Attack(EnemyTile.Entity);
 
                     if ( EnemyTile.Entity != null && EnemyTile.Entity.HP <= 0 )
                     {
@@ -287,16 +292,17 @@ public class AiControl : MonoBehaviour
                         {
                             BetterMoveEntityCloser(entity.tile.Row, entity.tile.Col, otherEntity.tile.Row, otherEntity.tile.Col, 3);
                             
-                            break;
+                            if ( iAttacked )
+                            {
+                                iAttacked = false;
+                                break;
+                            }
                         }
                     }
                 }
-
-                if ( iAttacked )
-                {
-                    iAttacked = false;
-                    break;
-                }
+                
+                
+                
                 if (restartLoop)
                 {
                     break;
@@ -336,7 +342,7 @@ public class AiControl : MonoBehaviour
 
     private float simulation_time = 0;
     private float simulation_time_max = 3;
-    private bool simulating = false;
+    public bool simulating = false;
     // properties down here? HERESY
     private List<Entity> entities = new List<Entity>();
 
