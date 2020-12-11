@@ -4,10 +4,14 @@ using System.Collections.Generic;
 using System.Net;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class AiControl : MonoBehaviour
 {
+    [SerializeField] TMP_InputField NameInput = null;
+    [SerializeField] TextMeshProUGUI ScoreField = null; 
+    [SerializeField] GameObject EndGameUI = null;
 
     public SimulationManager simulationManager;
     public PlacementManager placementManager; // i dont think this is needed but still nice to have
@@ -391,7 +395,18 @@ public class AiControl : MonoBehaviour
 
     public void GameEnded()
     {
-        // sim manager is called simulationManager! :D
-        // vernans code goes here! :D
+        ScoreField.text = "Your Score: " + (int)simulationManager.timer;
+        EndGameUI.SetActive(true);
+    }
+
+    private string username = "";
+    public void Clicked_SaveScore()
+    {
+        int score = (int)simulationManager.timer;
+
+        username = NameInput.text;
+        LeaderDataBaseManager.Instance.SaveScoreToDataBase(username, score);
+
+        SceneManager.LoadScene("LeaderBoard");
     }
 }

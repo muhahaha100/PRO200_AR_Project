@@ -9,7 +9,7 @@ public class SimulationManager : MonoBehaviour
     public AiControl aiControl;
     
     private bool SimulationRunning = false;
-    private float timer = 0.0f;
+    public float timer = 0.0f;
     void Update()
     {
         if (SimulationRunning)
